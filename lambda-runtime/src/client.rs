@@ -267,8 +267,8 @@ mod endpoint_tests {
             .build()
             .expect("Unable to build runtime");
 
-        async fn func(event: serde_json::Value, _: crate::Context) -> Result<serde_json::Value, Error> {
-            Ok(event)
+        async fn func(event: serde_json::Value, _: crate::Context, state: usize) -> Result<(serde_json::Value, usize), Error> {
+            Ok((event, state))
         }
         let f = crate::handler_fn(func);
 

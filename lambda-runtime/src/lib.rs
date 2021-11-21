@@ -69,13 +69,13 @@ impl Config {
 }
 
 /// A trait describing an asynchronous function `A` to `B`.
-pub trait Handler<A, B> {
+pub trait Handler<A, B, S> {
     /// Errors returned by this handler.
     type Error;
     /// Response of this handler.
-    type Fut: Future<Output = Result<B, Self::Error>>;
+    type Fut: Future<Output = Result<(B, S), Self::Error>>;
     /// Handle the incoming event.
-    fn call(&mut self, event: A, context: Context) -> Self::Fut;
+    fn call(&mut self, event: A, context: Context, state: S) -> Self::Fut;
 }
 
 /// Returns a new [`HandlerFn`] with the given closure.
@@ -93,16 +93,16 @@ pub struct HandlerFn<F> {
     f: F,
 }
 
-impl<F, A, B, Error, Fut> Handler<A, B> for HandlerFn<F>
+impl<F, A, B, S, Error, Fut> Handler<A, B, S> for HandlerFn<F>
 where
-    F: Fn(A, Context) -> Fut,
-    Fut: Future<Output = Result<B, Error>>,
+    F: Fn(A, Context, S) -> Fut,
+    Fut: Future<Output = Result<(B, S), Error>>,
     Error: Into<Box<dyn std::error::Error + Send + Sync + 'static>> + fmt::Display,
 {
     type Error = Error;
     type Fut = Fut;
-    fn call(&mut self, req: A, ctx: Context) -> Self::Fut {
-        (self.f)(req, ctx)
+    fn call(&mut self, req: A, ctx: Context, state: S) -> Self::Fut {
+        (self.f)(req, ctx, state)
     }
 }
 
@@ -132,20 +132,22 @@ where
     <C as Service<http::Uri>>::Error: Into<Box<dyn std::error::Error + Send + Sync>>,
     <C as Service<http::Uri>>::Response: AsyncRead + AsyncWrite + Connection + Unpin + Send + 'static,
 {
-    pub async fn run<F, A, B>(
+    pub async fn run<F, A, B, S>(
         &self,
         incoming: impl Stream<Item = Result<http::Response<hyper::Body>, Error>> + Send,
         mut handler: F,
         config: &Config,
     ) -> Result<(), Error>
     where
-        F: Handler<A, B>,
-        <F as Handler<A, B>>::Fut: Future<Output = Result<B, <F as Handler<A, B>>::Error>>,
-        <F as Handler<A, B>>::Error: fmt::Display,
+        F: Handler<A, B, S>,
+        <F as Handler<A, B, S>>::Fut: Future<Output = Result<(B, S), <F as Handler<A, B, S>>::Error>>,
+        <F as Handler<A, B, S>>::Error: fmt::Display,
         A: for<'de> Deserialize<'de>,
         B: Serialize,
+        S: Send,
     {
         let client = &self.client;
+        let mut state = 100;
         tokio::pin!(incoming);
         while let Some(event) = incoming.next().await {
             trace!("New event arrived (run loop)");
@@ -162,15 +164,16 @@ where
             env::set_var("_X_AMZN_TRACE_ID", xray_trace_id);
 
             let request_id = &ctx.request_id.clone();
-            let task = panic::catch_unwind(panic::AssertUnwindSafe(|| handler.call(body, ctx)));
+            let task = panic::catch_unwind(panic::AssertUnwindSafe(|| handler.call(body, ctx, state)));
 
             let req = match task {
                 Ok(response) => match response.await {
                     Ok(response) => {
                         trace!("Ok response from handler (run loop)");
+                        state = response.1;
                         EventCompletionRequest {
                             request_id,
-                            body: response,
+                            body: response.0,
                         }
                         .into_req()
                     }
@@ -295,13 +298,14 @@ where
 ///     Ok(event)
 /// }
 /// ```
-pub async fn run<A, B, F>(handler: F) -> Result<(), Error>
+pub async fn run<A, B, S, F>(handler: F) -> Result<(), Error>
 where
-    F: Handler<A, B>,
-    <F as Handler<A, B>>::Fut: Future<Output = Result<B, <F as Handler<A, B>>::Error>>,
-    <F as Handler<A, B>>::Error: fmt::Display,
+    F: Handler<A, B, S>,
+    <F as Handler<A, B, S>>::Fut: Future<Output = Result<(B, S), <F as Handler<A, B, S>>::Error>>,
+    <F as Handler<A, B, S>>::Error: fmt::Display,
     A: for<'de> Deserialize<'de>,
     B: Serialize,
+    S: Send,
 {
     trace!("Loading config from env");
     let config = Config::from_env()?;
