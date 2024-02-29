@@ -3,15 +3,15 @@
 ## Tech Stack
 rimutaka/aws-lambda-rust-runtime is built on the following main stack:
 
-- [Python](https://www.python.org) – Languages
-- [Swift](https://developer.apple.com/swift/) – Languages
-- [Rust](http://www.rust-lang.org/) – Languages
 - [JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript) – Languages
-- [Tower](https://www.git-tower.com/) – Source Code Management Desktop Apps
-- [Hyper](https://hyper.sh/) – Containers as a Service
+- [Python](https://www.python.org) – Languages
+- [Rust](http://www.rust-lang.org/) – Languages
+- [Swift](https://developer.apple.com/swift/) – Languages
 - [Serde](https://serde.rs) – Serialization Frameworks
-- [GitHub Actions](https://github.com/features/actions) – Continuous Integration
 - [Tokio](https://tokio.rs/) – Concurrency Frameworks
+- [GitHub Actions](https://github.com/features/actions) – Continuous Integration
+- [Hyper](https://hyper.sh/) – Containers as a Service
+- [Tower](https://www.git-tower.com/) – Source Code Management Desktop Apps
 
 Full tech stack [here](/techstack.md)
 
@@ -21,15 +21,15 @@ Full tech stack [here](/techstack.md)
 ## Tech Stack
 rimutaka/aws-lambda-rust-runtime is built on the following main stack:
 
-- <img width='25' height='25' src='https://img.stackshare.io/service/993/pUBY5pVj.png' alt='Python'/> [Python](https://www.python.org) – Languages
-- <img width='25' height='25' src='https://img.stackshare.io/service/1009/tuHsaI2U.png' alt='Swift'/> [Swift](https://developer.apple.com/swift/) – Languages
-- <img width='25' height='25' src='https://img.stackshare.io/service/1070/v7txhrjp9pdqrkdtxxp0.png' alt='Rust'/> [Rust](http://www.rust-lang.org/) – Languages
 - <img width='25' height='25' src='https://img.stackshare.io/service/1209/javascript.jpeg' alt='JavaScript'/> [JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript) – Languages
-- <img width='25' height='25' src='https://img.stackshare.io/service/1601/tower-dock-icon_transparent_2x.png' alt='Tower'/> [Tower](https://www.git-tower.com/) – Source Code Management Desktop Apps
-- <img width='25' height='25' src='https://img.stackshare.io/service/3125/xSVaubUG_400x400.jpg' alt='Hyper'/> [Hyper](https://hyper.sh/) – Containers as a Service
+- <img width='25' height='25' src='https://img.stackshare.io/service/993/pUBY5pVj.png' alt='Python'/> [Python](https://www.python.org) – Languages
+- <img width='25' height='25' src='https://img.stackshare.io/service/1070/v7txhrjp9pdqrkdtxxp0.png' alt='Rust'/> [Rust](http://www.rust-lang.org/) – Languages
+- <img width='25' height='25' src='https://img.stackshare.io/service/1009/tuHsaI2U.png' alt='Swift'/> [Swift](https://developer.apple.com/swift/) – Languages
 - <img width='25' height='25' src='https://img.stackshare.io/service/11028/no-img-open-source.png' alt='Serde'/> [Serde](https://serde.rs) – Serialization Frameworks
-- <img width='25' height='25' src='https://img.stackshare.io/service/11563/actions.png' alt='GitHub Actions'/> [GitHub Actions](https://github.com/features/actions) – Continuous Integration
 - <img width='25' height='25' src='https://img.stackshare.io/service/12187/bC40df3r_400x400.jpg' alt='Tokio'/> [Tokio](https://tokio.rs/) – Concurrency Frameworks
+- <img width='25' height='25' src='https://img.stackshare.io/service/11563/actions.png' alt='GitHub Actions'/> [GitHub Actions](https://github.com/features/actions) – Continuous Integration
+- <img width='25' height='25' src='https://img.stackshare.io/service/3125/xSVaubUG_400x400.jpg' alt='Hyper'/> [Hyper](https://hyper.sh/) – Containers as a Service
+- <img width='25' height='25' src='https://img.stackshare.io/service/1601/tower-dock-icon_transparent_2x.png' alt='Tower'/> [Tower](https://www.git-tower.com/) – Source Code Management Desktop Apps
 
 Full tech stack [here](/techstack.md)
 
@@ -40,7 +40,7 @@ Full tech stack [here](/techstack.md)
 # Tech Stack File
 ![](https://img.stackshare.io/repo.svg "repo") [rimutaka/aws-lambda-rust-runtime](https://github.com/rimutaka/aws-lambda-rust-runtime)![](https://img.stackshare.io/public_badge.svg "public")
 <br/><br/>
-|12<br/>Tools used|01/05/24 <br/>Report generated|
+|12<br/>Tools used|02/29/24 <br/>Report generated|
 |------|------|
 </div>
 
