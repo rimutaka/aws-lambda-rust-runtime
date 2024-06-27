@@ -81,13 +81,11 @@ The binary has to be compiled for the target architecture and the runtime of the
 - Runtimes: _Amazon Linux 2_ and _Amazon Linux 2023_
 - Architectures: _x86_64_ and _arm64_
 
-Recommended targets:
+Recommended `cargo build` targets:
 - Amazon Linux 2 / x86_64: `x86_64-unknown-linux-musl`
 - Amazon Linux 2 / arm64: `aarch64-unknown-linux-musl`
 - Amazon Linux 2023 / x86_64: `x86_64-unknown-linux-gnu`, `x86_64-unknown-linux-musl`
 - Amazon Linux 2023 / arm64: `aarch64-unknown-linux-gnu`, `aarch64-unknown-linux-musl`
-
-AWS Lambda fails with `Runtime.InvalidEntrypoint` exception if the target does not match the selected platform, e.g. id deploying _x86_64_ to _arm64_ architecture.
 
 The following script builds and deploys a Rust executable to an existing Lambda function.
 Replace the variable parts of the script with your values before running it from the project root.
@@ -102,6 +100,8 @@ cargo build --release --target $target
 cp ./target/$target/release/$crate ./bootstrap && zip lambda.zip bootstrap && rm bootstrap
 aws lambda update-function-code --region $region --function-name $lambda --zip-file fileb://lambda.zip
 ```
+
+AWS Lambda fails with `Runtime.InvalidEntrypoint` exception if the target does not match the selected platform, e.g. if deploying _x86_64_ to _arm64_ architecture.
 
 See [Building a Custom Runtime Guide](https://docs.aws.amazon.com/lambda/latest/dg/runtimes-custom.html) for more detailed explanations of the build and initialization process.
 
@@ -131,7 +131,7 @@ See [Cross-compilation](https://rust-lang.github.io/rustup/cross-compilation.htm
 
 ### Using `cargo lambda` command
 
-If you already have Cargo Lambda installed on your machine, run the next command to build your function:
+If you already have [Cargo Lambda](https://www.cargo-lambda.info) installed on your machine, run the next command to build your function:
 
 ```bash
 cargo lambda build --release
